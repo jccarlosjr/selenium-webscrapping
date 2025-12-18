@@ -1,0 +1,1 @@
+LOCAL_USER_PATH = r"--user-data-dir=C:\Users\Usuário\AppData\Local\Google\Chrome\User Data\Profile 1"
