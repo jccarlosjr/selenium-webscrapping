@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <title>Consulta por CPF</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
     <style>
-        body {
-            background-color: #f4f6f9;
-        }
-        .label {
+       .label {
             font-weight: 600;
             color: #555;
         }
@@ -79,7 +77,6 @@ function consultar() {
         }
 
         status.innerHTML = `<div></div>`;
-        console.log(data);
         renderResultado(data);
     })
     .catch(() => {
@@ -120,105 +117,102 @@ function renderResultado(data) {
     result.innerHTML = "";
 
     data.forEach((element, index) => {
-        console.log(element.empréstimos);
+        let installmentHTML = "";
+        let collapseId = `collapse-${index}`;
+
+        if (element["empréstimos"] && element["empréstimos"].length) {
+            element["empréstimos"].forEach(installment => {
+                installmentHTML += renderInstallments(installment);
+            });
+        }
+
         html = `
-            <div class="accordion-item rounded shadow-lg p-3">
+            <div class="accordion-item rounded shadow-sm p-3 mt-2 bg-success-subtle">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                        <div class="col-md-3">
-                            ${element.nome}
+                    <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#${collapseId}"
+                        aria-expanded="false"
+                        aria-controls="${collapseId}">
+                        <div class="col-md-6">
+                            <span class="label">Matrícula: ${element.nb_uf}</span>
                         </div>
-                        <div class="col-md-3">
-                            Matrícula: ${element.nb_uf}
+                        <div class="col-md-6">
+                            <span class="label">${element.especie}</span>
                         </div>
-                        <div class="col-md-4">
-                            ${element.especie}
-                        </div>
-                        <div class="col-md-2">
-                            ${element.nascimento}
-                        </div>
+                        <i class="bi bi-chevron-down"></i>
                     </button>
                 </h2>
-                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div id="${collapseId}" class="accordion-collapse collapse mt-2 bg-light rounded">
                     <div class="row g-3 ms-2 mt-1 text-center">
-                        <div class="col-md-2">
-                            <span class="label">Situação</span>
+                        <div class="col-md-4">
+                            <label class="label">Nome</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${element.nome}" type="text">
                         </div>
                         <div class="col-md-2">
-                            <span class="label">Data de Despacho</span>
+                            <label class="label">CPF</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${element.cpf}" type="text">
                         </div>
                         <div class="col-md-2">
-                            <span class="label">Recebimento</span>
+                            <label class="label">Nascimento</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${element.nascimento}" type="text">
                         </div>
                         <div class="col-md-2">
-                            <span class="label">Salário</span>
-                        </div>
-                        <div class="col-md-1">
-                            <span class="label">Banco</span>
-                        </div>
-                        <div class="col-md-1">
-                            <span class="label">Agência</span>
-                        </div>
-                        <div class="col-md-2">
-                            <span class="label">Conta</span>
+                            <label class="label">Matrícula</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${element.nb_uf}" type="text">
                         </div>
                     </div>
-                    <div class="row g-3 ms-2 text-center">
+                    <div class="row g-3 ms-2 mt-1 text-center">
                         <div class="col-md-2">
-                            <span class="badge rounded-pill bg-info">
-                                ${element.situacao_beneficio}
-                            </span>
+                            <label class="label">Situação</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${element.situacao_beneficio}" type="text">
                         </div>
                         <div class="col-md-2">
-                            <small class="text-muted">${element.ddb}</small>
+                            <label class="label">Data de Despacho</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${element.ddb}" type="text">
                         </div>
                         <div class="col-md-2">
-                            <small class="text-muted">${element.meio_pagamento}</small>
+                            <label class="label">Recebimento</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${element.meio_pagamento}" type="text">
                         </div>
                         <div class="col-md-2">
-                            <small class="text-muted">${element.base_calculo}</small>
+                            <label class="label">Salário</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${element.base_calculo}" type="text">
                         </div>
                         <div class="col-md-1">
-                            <small class="text-muted">${element.banco}</small>
+                            <label class="label">Banco</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${element.banco}" type="text">
                         </div>
                         <div class="col-md-1">
-                            <small class="text-muted">${element.agencia}</small>
+                            <label class="label">Agência</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${element.agencia}" type="text">
                         </div>
                         <div class="col-md-2">
-                            <small class="text-muted">${element.conta_corrente}</small>
+                            <label class="label">Conta</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${element.conta_corrente}" type="text">
                         </div>
                     </div>
 
                     <div class="row g-3 ms-2 text-center mt-2">
                         <div class="col-md-4">
-                            <span class="label">Endereço</span>
+                            <label class="label">Endereço</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${element.endereco}" type="text">
                         </div>
                         <div class="col-md-2">
-                            <span class="label">CEP</span>
+                            <label class="label">CEP</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${maskCEP(element.cep)}" type="text">
                         </div>
                         <div class="col-md-2">
-                            <span class="label">Bairro</span>
+                            <label class="label">Bairro</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${element.bairro}" type="text">
                         </div>
                         <div class="col-md-3">
-                            <span class="label">Cidade UF</span>
-                        </div>
-                    </div>
-                    <div class="row g-3 ms-2 text-center">
-                        <div class="col-md-4">
-                            <small class="text-muted">${element.endereco}</small>
-                        </div>
-                        <div class="col-md-2">
-                            <small class="text-muted">${element.cep}</small>
-                        </div>
-                        <div class="col-md-2">
-                            <small class="text-muted">${element.bairro}</small>
-                        </div>
-                        <div class="col-md-3">
-                            <small class="text-muted">${element.cidade_uf}</small>
+                            <label class="label">Cidade UF</label>
+                            <input class="text-muted form-control form-control-sm text-center" disabled value="${element.cidade_uf}" type="text">
                         </div>
                     </div>
 
-                    <div class="row ms-1 mt-4">
+                    <div class="row ms-1 me-1 mt-4">
                         <div class="col-4">
                             <div class="card p-2">
                                 <div class="card-head"><span class="label">Margem Livre</span> <span class="text-muted">${element.margem_35}</span></div>
@@ -243,23 +237,16 @@ function renderResultado(data) {
                         <div class="card">
                             <div class="card-header">
                                 <div class="row text-center">
-                                    <div class="col-2">Contrato</div>
-                                    <div class="col-2">Banco</div>
-                                    <div class="col-2">Parcela</div>
-                                    <div class="col-2">Saldo</div>
-                                    <div class="col-2">Prazo</div>
-                                    <div class="col-2">Taxa</div>
+                                    <div class="col-2"><span class="label">Contrato</span></div>
+                                    <div class="col-2"><span class="label">Banco</span></div>
+                                    <div class="col-2"><span class="label">Parcela</span></div>
+                                    <div class="col-2"><span class="label">Saldo</span></div>
+                                    <div class="col-2"><span class="label">Prazo</span></div>
+                                    <div class="col-2"><span class="label">Taxa</span></div>
                                 </div>
                             </div>
-                            <div class="card-body" id="installments-${index}">
-                                <div class="row text-center border-bottom">
-                                    <div class="col-2">35423132131</div>
-                                    <div class="col-2">MERCANTIL - 389</div>
-                                    <div class="col-2">R$ 342,52</div>
-                                    <div class="col-2">R$ 4.352.56</div>
-                                    <div class="col-2">84/96 | 12 Pagas</div>
-                                    <div class="col-2">1.70%</div>
-                                </div>
+                            <div class="card-body">
+                                ${installmentHTML || "<div class='text-center text-muted'>Nenhum empréstimo</div>"}
                             </div>
                         </div>
                     </div>
@@ -267,9 +254,30 @@ function renderResultado(data) {
             </div>
         
         `
-
         result.innerHTML += html;
     });
+}
+
+
+function renderInstallments(element){
+    return `
+    <div class="row text-center py-1">
+        <div class="col-2"><small class="text-muted">${element.contrato}</small></div>
+        <div class="col-2"><small class="text-muted"><span>${bankHandler(element.banco)}</span></small></div>
+        <div class="col-2"><small class="text-muted">R$ <span>${element.parcela}</span></small></div>
+        <div class="col-2"><small class="text-muted">R$ <span>${element.saldo_devedor}</span></small></div>
+        <div class="col-2"><small class="text-muted"><span>${element.prazo}</span></small></div>
+        <div class="col-2"><small class="text-muted"><span>${element.taxa}</span></small></div>
+    </div>
+    <div class="row text-center border-bottom py-1">
+        row
+    </div>
+    `
+}
+
+
+function bankHandler(text){
+    return text.split(":")[1].trim();
 }
 
 </script>
